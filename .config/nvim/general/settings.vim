@@ -16,10 +16,6 @@ set noerrorbells "NO ERROR BELLS
 set nowrap "Dont wrap long text into newline
 set nu rnu " relative line numbering
 set clipboard=unnamed " public copy/paste register
-set noswapfile " no swap files
-set nobackup
-set undodir=$HOME/.config/nvim/undodir
-set undofile
 set incsearch " incremental search
 set wildmenu " graphical auto complete menu
 set lazyredraw " redraws the screne when it needs to
@@ -28,5 +24,19 @@ set scrolloff=8 " Keep an 8 line window when scrolling down
 set signcolumn=yes " extra column for linting
 set colorcolumn=80 " 80 columns is a lil overkill. callback hell
 set completeopt=menuone,noinsert,noselect
+set noswapfile " no swap files
+set nobackup
 
+if has("persistent_undo")
+   let target_path = expand('~/.undodir')
+
+    " create the directory and any parent directories
+    " if the location does not exist.
+    if !isdirectory(target_path)
+        call mkdir(target_path, "p", 0700)
+    endif
+
+    let &undodir=target_path
+    set undofile
+endif
 
