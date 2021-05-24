@@ -9,7 +9,7 @@ set shiftwidth=4
 set expandtab
 set smartindent
 set cmdheight=2 "More space to display images
-set updatetime=50 "Shorter update times
+set updatetime=150 "Shorter update times
 set nohlsearch "Dont highlight searches
 set hidden "Keep buffer without saving it in background
 set noerrorbells "NO ERROR BELLS
