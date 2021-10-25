@@ -34,10 +34,14 @@ require('packer').startup(function()
   use 'neovim/nvim-lspconfig' -- Collection of configurations for built-in LSP client
   use 'hrsh7th/nvim-compe' -- Autocompletion plugin
   use 'simrat39/symbols-outline.nvim' -- Symbols outline for LSP
+  use {
+  'nvim-lualine/lualine.nvim',
+  requires = {'kyazdani42/nvim-web-devicons', opt = true}
+}
   use 'L3MON4D3/LuaSnip' -- Snippets plugin
   use 'gruvbox-community/gruvbox'
   -- Prettier formatting for JS and friends
-  use 'sbdchd/neoformat'
+  --use 'sbdchd/neoformat'
   use {'prettier/vim-prettier', 
     run = 'yarn install', 
     ft = { 'javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html' }
@@ -47,6 +51,7 @@ require('packer').startup(function()
 end)
 
 -- Sets
+--vim.o.clipboard .. "unnamedplus"
 vim.bo.et = true -- Expand tab (spaces instead of tab character)
 vim.bo.shiftwidth = 2 -- I like tabs to be 2 spaces 
 vim.bo.sts = 2 -- Soft tab stop 2 spaces
@@ -54,10 +59,12 @@ vim.o.nu = true -- Line numbering
 vim.o.rnu = true -- Relative line numbering
 vim.o.ch = 2 -- Command line height for more text
 vim.wo.wrap = false -- No line wrap
+vim.wo.scl = "yes" -- Sign column for linting
 vim.o.eb = false -- No error bells, ever. (off by default)
 vim.o.hid = true -- Keep buffers alive without saving
 vim.o.gcr = "" -- Disable cursor styling
 vim.o.wmnu = true -- Wildmenu for autocompletes (on by default)
+vim.o.hls = false -- No highligh search
 vim.o.swapfile = false -- No swap file
 vim.o.so = 8 -- Keep an 8 line window when scrolling down
 vim.o.ut = 150 -- Shorter update time
@@ -71,8 +78,21 @@ vim.cmd [[colorscheme gruvbox]] -- Set colorscheme
 vim.o.cot = "menuone,noinsert,noselect" -- Insert mode completion options
 vim.o.lz = true -- Lazy redraw. 
 
--- Clipboard settings ? unnamed vs unnamedplus --
--- PERSISTENT UNDO THING GOES HERE --
+-- Clipboard settings ? unnamed vs unnamedplus 
+vim.cmd([[
+if has("persistent_undo")
+   let target_path = expand('~/.undodir')
+
+    " create the directory and any parent directories
+    " if the location does not exist.
+    if !isdirectory(target_path)
+        call mkdir(target_path, "p", 0700)
+    endif
+
+    let &undodir=target_path
+    set undofile
+endif
+]])
 
 -- MAPS START --
 
@@ -111,7 +131,6 @@ vim.api.nvim_set_keymap('i', '?', '?<c-g>u', { noremap = true  })
 
 -- Jumplist mutations
 --vim.api.nvim_set_keymap('n', '<expr> k', '?<c-g>u', { noremap = true  })
---how to do this in lua?
 
 -- Moving text
 vim.api.nvim_set_keymap('n', '<leader>k', ':m .-2<CR>==', { noremap = true  })
@@ -120,7 +139,6 @@ vim.api.nvim_set_keymap('i', '<C-k>', '<esc>:m .-2<CR>==', { noremap = true  })
 vim.api.nvim_set_keymap('i', '<C-j>', '<esc>:m .+1<CR>==', { noremap = true  })
 vim.api.nvim_set_keymap('v', 'J', ":m '>+1<CR>gv=gv", { noremap = true  })
 vim.api.nvim_set_keymap('v', 'K', ":m '<-2<CR>gv=gv", { noremap = true  })
-
 
 -- MAPS END --
 
@@ -222,6 +240,7 @@ require('telescope').load_extension('media_files')
 -- Telescope mappings--
 vim.api.nvim_set_keymap('n', '<leader>ps', ":lua require('telescope.builtin').grep_string({ search = vim.fn.input('Grep for > ') })<CR>", { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>pf', ":lua require('telescope.builtin').find_files()<CR>", { noremap = true } )
+vim.api.nvim_set_keymap('n', '<C-p>', ":lua require('telescope.builtin').git_files()<CR>", {noremap = true})
 
 -- Compe setup
 require'compe'.setup {
@@ -319,10 +338,13 @@ require'lspconfig'.jsonls.setup {
 }
 
 local system_name
+local sumneko_root_path
 if vim.fn.has("mac") == 1 then
   system_name = "macOS"
+  sumneko_root_path = "/Users/aalhendi/Desktop/stuff/Development/lua-language-server"
 elseif vim.fn.has("unix") == 1 then
   system_name = "Linux"
+  sumneko_root_path = "/usr/bin/lua-language-server"
 elseif vim.fn.has('win32') == 1 then
   system_name = "Windows"
 else
@@ -331,9 +353,7 @@ end
 
 -- set the path to the sumneko installation; if you previously installed via the now deprecated :LspInstall, use
 --local sumneko_root_path = vim.fn.stdpath('cache')..'/lspconfig/sumneko_lua/lua-language-server'
---local sumneko_binary = sumneko_root_path.."/bin/"..system_name.."/lua-language-server"
-local sumneko_root_path = "/usr/bin/lua-language-server"
-local sumneko_binary = "/usr/bin/lua-language-server/bin/" .. system_name .. "/lua-language-server"
+local sumneko_binary = sumneko_root_path.."/bin/"..system_name.."/lua-language-server"
 
 local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, "lua/?.lua")
@@ -420,3 +440,54 @@ let g:prettier#config#require_pragma = 'false'
 let g:prettier#config#end_of_line = get(g:, 'prettier#config#end_of_line', 'lf')
 
 ]])
+
+require'lualine'.setup {
+  options = {
+    icons_enabled = true,
+    theme = 'auto',
+    component_separators = { left = '', right = ''},
+    section_separators = { left = '', right = ''},
+    disabled_filetypes = {},
+    always_divide_middle = true,
+  },
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'branch', 'diff',
+                  {'diagnostics', sources={'nvim_lsp', 'coc'}}},
+    lualine_c = {'filename'},
+    lualine_x = {'encoding', 'fileformat', 'filetype'},
+    lualine_y = {'progress'},
+    lualine_z = {'location'}
+  },
+  inactive_sections = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = {'filename'},
+    lualine_x = {'location'},
+    lualine_y = {},
+    lualine_z = {}
+  },
+  tabline = {},
+  extensions = {},
+  theme = 'gruvbox'
+}
+
+-- NERDTREE Setup maybe
+--[[
+" Allow line numbers
+let NERDTreeShowLineNumbers=1
+" Open
+nmap <C-f> :NERDTreeToggle<CR>
+" Comment
+augroup NERDTREE
+    autocmd!
+    " Enable relative line numbers in NERDTree
+    autocmd FileType nerdtree setlocal relativenumber
+    " Open automatically on start
+    " autocmd VimEnter * NERDTree
+    " Smart closing
+    autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+augroup END
+" Make NERDTree scrolling faster (prevent lag)
+let NERDTreeHighlightCursorline = 0
+--]]
