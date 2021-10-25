@@ -51,7 +51,7 @@ require('packer').startup(function()
 end)
 
 -- Sets
---vim.o.clipboard .. "unnamedplus"
+vim.o.clipboard = "unnamedplus" -- Set clipboard
 vim.bo.et = true -- Expand tab (spaces instead of tab character)
 vim.bo.shiftwidth = 2 -- I like tabs to be 2 spaces 
 vim.bo.sts = 2 -- Soft tab stop 2 spaces
