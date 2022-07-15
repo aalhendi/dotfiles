@@ -47,7 +47,7 @@ nnoremap('J', 'mzJ`z')
 
 -- Undo breakpoints
 inoremap(',', ',<c-g>u')
-inoremap('.', ',<c-g>u')
+inoremap('.', '.<c-g>u')
 inoremap('!', '!<c-g>u')
 inoremap('?', '?<c-g>u')
 
@@ -63,9 +63,8 @@ vnoremap('J', ":m '>+1<CR>gv=gv")
 vnoremap('K', ":m '>-2<CR>gv=gv")
 
 
--- Telescope 
+-- Telescope
 nnoremap('<leader>ps', ":lua require('telescope.builtin').grep_string({ search = vim.fn.input('Grep for > ') })<CR>")
 nnoremap('<leader>pf', ":lua require('telescope.builtin').find_files()<CR>")
 nnoremap('<C-p>', ":lua require('telescope.builtin').git_files()<CR>")
 nnoremap('<leader>pw', ":lua require('telescope.builtin').grep_string({ search = vim.fn.expand('<cword>')})<CR>")
-

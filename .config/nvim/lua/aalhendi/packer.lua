@@ -13,7 +13,7 @@ require('packer').startup(function()
   -- Add indentation guides even on blank lines
   use 'lukas-reineke/indent-blankline.nvim'
   -- Highlight, edit, and navigate code using a fast incremental parsing library
-  use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' } 
+  use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
   -- Additional textobjects for treesitter
   use {'nvim-treesitter/nvim-treesitter-textobjects' }
   use 'norcalli/nvim-colorizer.lua' -- Colorizer for hex
@@ -27,11 +27,11 @@ require('packer').startup(function()
   use 'L3MON4D3/LuaSnip' -- Snippets plugin
   use 'gruvbox-community/gruvbox'
   -- Prettier formatting for JS and friends
-  --use 'sbdchd/neoformat'
-  use {'prettier/vim-prettier', 
-    run = 'yarn install', 
-    ft = { 'javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html' }
-  }
+  use 'sbdchd/neoformat'
+  -- use {'prettier/vim-prettier',
+  --   run = 'yarn install',
+  --   ft = { 'javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html' }
+  -- }
   use 'mbbill/undotree' -- Undo tree with undo history
   use 'vim-utils/vim-man' -- Read manuals with viman
 end)
