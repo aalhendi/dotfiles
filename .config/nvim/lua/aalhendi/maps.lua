@@ -1,19 +1,8 @@
 -- MAPS
-
-local M = {}
-function M.nnoremap(lhs, rhs)
-    vim.keymap.set("n", lhs, rhs, {noremap = true})
-end
-function M.inoremap(lhs, rhs)
-    vim.keymap.set("i", lhs, rhs, {noremap = true})
-end
-function M.vnoremap(lhs, rhs)
-    vim.keymap.set("v", lhs, rhs, {noremap = true})
-end
-
-local nnoremap = M.nnoremap
-local inoremap = M.inoremap
-local vnoremap = M.vnoremap
+local neogit = require('neogit')
+local nnoremap = require('aalhendi.keymap').nnoremap
+local inoremap = require('aalhendi.keymap').inoremap
+local vnoremap = require('aalhendi.keymap').vnoremap
 
 --Remap space as leader key
 vim.keymap.set('', '<Space>', '<Nop>', { noremap = true, silent = true })
@@ -25,17 +14,6 @@ nnoremap('<leader>pv', ":Ex<CR>")
 
 -- Y yank until the end of line
 nnoremap('Y', 'y$')
-
--- Highlight on yank
-vim.api.nvim_exec(
-  [[
-  augroup YankHighlight
-    autocmd!
-    autocmd TextYankPost * silent! lua vim.highlight.on_yank()
-  augroup end
-]],
-  false
-)
 
 -- Toggle undo tree
 nnoremap('<F5>', ':UndotreeToggle<CR>')
@@ -68,3 +46,11 @@ nnoremap('<leader>ps', ":lua require('telescope.builtin').grep_string({ search =
 nnoremap('<leader>pf', ":lua require('telescope.builtin').find_files()<CR>")
 nnoremap('<C-p>', ":lua require('telescope.builtin').git_files()<CR>")
 nnoremap('<leader>pw', ":lua require('telescope.builtin').grep_string({ search = vim.fn.expand('<cword>')})<CR>")
+
+-- Neogit
+local neogit = require('neogit')
+nnoremap("<leader>gs", function()
+    neogit.open({ })
+end);
+
+nnoremap("<leader>ga", "<cmd>!git fetch --all<CR>");

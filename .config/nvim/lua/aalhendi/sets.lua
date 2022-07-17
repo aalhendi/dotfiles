@@ -22,6 +22,7 @@ vim.opt.colorcolumn = '80' -- Color column 80 for visual aid. Prevent callback h
 vim.opt.showmatch = true -- Show matching brackets when bracket inserted
 vim.opt.encoding = "utf-8" -- Encoding to UTF-8 (utf-8 by default)
 vim.opt.termguicolors = true -- Terminal gui colors
+vim.opt.mouse = 'a'
 vim.cmd [[colorscheme gruvbox]] -- Set colorscheme
 vim.opt.cot = "menuone,noinsert,noselect" -- Insert mode completion options
 vim.opt.lazyredraw = true -- Lazy redraw.
