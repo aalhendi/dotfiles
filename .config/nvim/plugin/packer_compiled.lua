@@ -127,20 +127,10 @@ _G.packer_plugins = {
     path = "/home/aalhendi/.local/share/nvim/site/pack/packer/start/lsp_extensions.nvim",
     url = "https://github.com/nvim-lua/lsp_extensions.nvim"
   },
-  ["lspcontainers.nvim"] = {
-    loaded = true,
-    path = "/home/aalhendi/.local/share/nvim/site/pack/packer/start/lspcontainers.nvim",
-    url = "https://github.com/lspcontainers/lspcontainers.nvim"
-  },
   ["lspkind-nvim"] = {
     loaded = true,
     path = "/home/aalhendi/.local/share/nvim/site/pack/packer/start/lspkind-nvim",
     url = "https://github.com/onsails/lspkind-nvim"
-  },
-  ["lspsaga.nvim"] = {
-    loaded = true,
-    path = "/home/aalhendi/.local/share/nvim/site/pack/packer/start/lspsaga.nvim",
-    url = "https://github.com/glepnir/lspsaga.nvim"
   },
   ["lualine.nvim"] = {
     loaded = true,
@@ -156,11 +146,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/aalhendi/.local/share/nvim/site/pack/packer/start/neogit",
     url = "https://github.com/TimUntersberger/neogit"
-  },
-  ["nlua.nvim"] = {
-    loaded = true,
-    path = "/home/aalhendi/.local/share/nvim/site/pack/packer/start/nlua.nvim",
-    url = "https://github.com/tjdevries/nlua.nvim"
   },
   ["nvim-cmp"] = {
     after = { "LuaSnip" },
@@ -186,6 +171,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/aalhendi/.local/share/nvim/site/pack/packer/start/nvim-dap-virtual-text",
     url = "https://github.com/theHamsta/nvim-dap-virtual-text"
+  },
+  ["nvim-lsp-installer"] = {
+    loaded = true,
+    path = "/home/aalhendi/.local/share/nvim/site/pack/packer/start/nvim-lsp-installer",
+    url = "https://github.com/williamboman/nvim-lsp-installer"
   },
   ["nvim-lspconfig"] = {
     loaded = true,

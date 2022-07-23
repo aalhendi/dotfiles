@@ -4,6 +4,7 @@ local previewers = require("telescope.previewers")
 local action_state = require("telescope.actions.state")
 local conf = require("telescope.config").values
 local actions = require("telescope.actions")
+local nnoremap = require('aalhendi.keymap').nnoremap
 
 -- Telescope Setup
 require("telescope").setup {
@@ -46,9 +47,9 @@ require("telescope").setup {
   color_devicons = true,
   use_less = true,
   set_env = { ['COLORTERM'] = 'truecolor' }, -- default = nil,
-  file_previewer = require'telescope.previewers'.vim_buffer_cat.new,
-  grep_previewer = require'telescope.previewers'.vim_buffer_vimgrep.new,
-  qflist_previewer = require'telescope.previewers'.vim_buffer_qflist.new,
+  file_previewer = previewers.vim_buffer_cat.new,
+  grep_previewer = previewers.vim_buffer_vimgrep.new,
+  qflist_previewer = previewers.vim_buffer_qflist.new,
   pickers = {
     -- Your special builtin config goes in here
     buffers = {
@@ -57,12 +58,12 @@ require("telescope").setup {
       previewer = false,
       mappings = {
         i = {
-          ["<c-d>"] = require("telescope.actions").delete_buffer,
+          ["<c-d>"] = actions.delete_buffer,
           ["<C-x>"] = false,
-          ["<C-q>"] = require("telescope.actions").send_to_qflist,
+          ["<C-q>"] = actions.send_to_qflist,
         },
         n = {
-          ["<c-d>"] = require("telescope.actions").delete_buffer,
+          ["<c-d>"] = actions.delete_buffer,
         }
       }
     },
@@ -86,6 +87,14 @@ require("telescope").setup {
 require("telescope").load_extension("git_worktree")
 require('telescope').load_extension('fzy_native')
 require('telescope').load_extension('media_files')
+-- TELESCOPE MAPS
+nnoremap('<leader>ps', ":lua require('telescope.builtin').grep_string({ search = vim.fn.input('Grep for > ') })<CR>")
+nnoremap('<leader>pf', ":lua require('telescope.builtin').find_files()<CR>")
+nnoremap('<leader>pg', ":lua require('telescope.builtin').live_grep()<CR>")
+nnoremap('<leader>pb', ":lua require('telescope.builtin').buffers()<CR>")
+nnoremap('<C-p>', ":lua require('telescope.builtin').git_files()<CR>")
+nnoremap('<leader>pw', ":lua require('telescope.builtin').grep_string({ search = vim.fn.expand('<cword>')})<CR>")
+nnoremap("<leader>pj", ":lua require('telescope.builtin').current_buffer_fuzzy_find{sorting_strategy='ascending',prompt_position='top'}<CR>")
 
 local M = {}
 
@@ -117,7 +126,7 @@ M.refactors = function()
 		finder = require("telescope.finders").new_table({
 			results = require("refactoring").get_refactors(),
 		}),
-		sorter = require("telescope.config").values.generic_sorter({}),
+		sorter = conf.generic_sorter({}),
 		attach_mappings = function(_, map)
 			map("i", "<CR>", refactor)
 			map("n", "<CR>", refactor)

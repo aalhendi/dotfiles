@@ -40,16 +40,13 @@ require('packer').startup(function()
   use 'norcalli/nvim-colorizer.lua' -- Colorizer for hex
 
   -- LSP
-  use 'neovim/nvim-lspconfig' -- Collection of configurations for built-in LSP client
-  if vim.fn.has "unix" == 1 and vim.fn.has "mac" ~= 1 then
-    use { "lspcontainers/lspcontainers.nvim" } -- Lang servers in containers
-  end
-  use 'tjdevries/nlua.nvim'
+  use {
+    "williamboman/nvim-lsp-installer",  use 'neovim/nvim-lspconfig' -- Collection of configurations for built-in LSP client
+  }
   use("hrsh7th/cmp-nvim-lsp")
   use("hrsh7th/cmp-buffer")
   use("onsails/lspkind-nvim")
   use("nvim-lua/lsp_extensions.nvim")
-  use("glepnir/lspsaga.nvim")
   use 'simrat39/symbols-outline.nvim' -- Symbols outline for LSP
   use {
     'hrsh7th/nvim-cmp',
@@ -70,12 +67,12 @@ require('packer').startup(function()
   use("mfussenegger/nvim-dap")
   use { 'rcarriga/nvim-dap-ui', requires = {'mfussenegger/nvim-dap'} }
   use { 'theHamsta/nvim-dap-virtual-text', requires = { {"mfussenegger/nvim-dap"}, {'nvim-treesitter/nvim-treesitter'} } }
+  use 'vim-utils/vim-man' -- Read manuals with viman
 
-
+  -- Style
   use 'gruvbox-community/gruvbox'
   use { 'nvim-lualine/lualine.nvim', requires = {'kyazdani42/nvim-web-devicons', opt = true} }
   use {'akinsho/bufferline.nvim', tag = "v2.*", requires = 'kyazdani42/nvim-web-devicons'}
   use 'sbdchd/neoformat' -- Prettier formatting for JS and friends
-  use 'vim-utils/vim-man' -- Read manuals with viman
 
 end)
