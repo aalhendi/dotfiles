@@ -45,7 +45,6 @@ require('packer').startup(function()
   }
   use("hrsh7th/cmp-nvim-lsp")
   use("hrsh7th/cmp-buffer")
-  use("onsails/lspkind-nvim")
   use("nvim-lua/lsp_extensions.nvim")
   use 'simrat39/symbols-outline.nvim' -- Symbols outline for LSP
   use {
@@ -55,8 +54,9 @@ require('packer').startup(function()
   use { 'saadparwaiz1/cmp_luasnip' }
   use {
     'L3MON4D3/LuaSnip',after = 'nvim-cmp',
-    config = function() require('aalhendi.snippets') end,
+    config = function() require('aalhendi.luasnip') end,
   }
+  use "rafamadriz/friendly-snippets"
 
   -- Git
   use { 'TimUntersberger/neogit', requires = 'nvim-lua/plenary.nvim' }

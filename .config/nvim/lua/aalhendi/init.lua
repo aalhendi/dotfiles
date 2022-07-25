@@ -30,6 +30,16 @@ autocmd({"BufWritePre"}, {
     command = "%s/\\s\\+$//e",
 })
 
+autocmd({"BufEnter", "BufRead"}, {
+    group = aalhendiGroup,
+    pattern = "*.astro",
+    callback = function()
+      vim.opt_local.filetype = 'astro'
+      --nvim_exec('TSBufEnable highlight')
+    end
+})
+ require'nvim-treesitter.configs'.setup { ensure_installed = "all", highlight = { enable = true } }
+
 vim.g.netrw_browse_split = 0
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
