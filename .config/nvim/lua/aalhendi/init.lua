@@ -16,14 +16,6 @@ autocmd('TextYankPost', {
     end
 })
 
-autocmd({"BufEnter", "BufWinEnter", "TabEnter"}, {
-    group = aalhendiGroup,
-    pattern = "*.rs",
-    callback = function()
-        require("lsp_extensions").inlay_hints{}
-    end
-})
-
 autocmd({"BufWritePre"}, {
     group = aalhendiGroup,
     pattern = "*",
@@ -38,13 +30,14 @@ autocmd({"BufEnter", "BufRead"}, {
       --nvim_exec('TSBufEnable highlight')
     end
 })
- require'nvim-treesitter.configs'.setup { ensure_installed = "all", highlight = { enable = true } }
 
 vim.g.netrw_browse_split = 0
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
 
 require("aalhendi.packer")
+-- TODO: Move this
+require'nvim-treesitter.configs'.setup { ensure_installed = {"c", "lua", "rust", "typescript", "prisma", "python"}, highlight = { enable = true } }
 require('aalhendi.sets')
 require('aalhendi.maps')
 require('aalhendi.colorizer')

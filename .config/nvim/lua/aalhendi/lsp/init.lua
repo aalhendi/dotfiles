@@ -23,8 +23,7 @@ elseif vim.fn.has "unix" == 1 then
     require "aalhendi.lsp.linux-configs"
     require("aalhendi.lsp.handlers").setup()
     require "aalhendi.lsp.null-ls"
-    require("nvim-lsp-installer").setup({
-	automatic_installation = true, -- automatically detect which servers to install (based on which servers are set up via lspconfig)
+    require("mason").setup({
 	ui = {
 	    icons = {
 		server_installed = "✓",

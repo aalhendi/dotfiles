@@ -40,13 +40,27 @@ require('packer').startup(function()
   use 'norcalli/nvim-colorizer.lua' -- Colorizer for hex
 
   -- LSP
-  use {
-    "williamboman/nvim-lsp-installer",  use 'neovim/nvim-lspconfig' -- Collection of configurations for built-in LSP client
+  use {"williamboman/mason.nvim"}
+  use {"williamboman/mason-lspconfig.nvim"}
+  use {'neovim/nvim-lspconfig'}
+  use {'akinsho/flutter-tools.nvim', requires = 'nvim-lua/plenary.nvim',
+    config = function ()
+    	require("flutter-tools").setup{}
+    end
   }
   use("hrsh7th/cmp-nvim-lsp")
   use("hrsh7th/cmp-buffer")
   use("nvim-lua/lsp_extensions.nvim")
   use 'simrat39/symbols-outline.nvim' -- Symbols outline for LSP
+  use {
+  "folke/trouble.nvim",
+  requires = "kyazdani42/nvim-web-devicons",
+  config = function()
+    require("trouble").setup {
+      -- default settings
+    }
+  end
+}
   use {
     'hrsh7th/nvim-cmp',
     config = function() require('aalhendi.cmp') end,

@@ -13,12 +13,16 @@ set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:MesloLGS NF 12
-#font pango:monospace 12
+# font pango:monospace 12
+font pango:Inconsolata Nerd Font Mono:style=Regular 12
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 #font pango:DejaVu Sans Mono 8
+
+# Start XDG autostart .desktop files using dex. See also
+# https://wiki.archlinux.org/index.php/XDG_Autostart
+exec --no-startup-id dex --autostart --environment i3
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
@@ -42,7 +46,6 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 floating_modifier $mod
 
 # start a terminal
-# bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+Return exec alacritty
 
 # kill focused window
@@ -177,24 +180,24 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
-bar {
-        status_command i3status --config ~/.config/i3/.i3status.conf
-}
-
-# Wallpaper
-exec_always nitrogen --restore
-
-# Lockscreen
-bindsym $mod+Shift+x exec i3lock -c 000000
-
-#Brightness
-bindsym XF86MonBrightnessUp exec brightnessctl s +1%
-bindsym XF86MonBrightnessDown exec brightnessctl s 1%-
+# Move focused workspace between monitors
+bindsym $mod+Ctrl+greater move workspace to output right
+bindsym $mod+Ctrl+less move workspace to output left
 
 #Screenshot
 bindsym Print exec flameshot gui -p ~/Pictures/captures
 
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+bar {
+        status_command i3status
+	tray_output primary
+}
+
+gaps inner 10
+for_window [class=".*"] border pixel 2
+
 #Autostart
-exec_always ./usr/local/bin/activitywatch/aw-qt
+exec_always aw-qt
+exec_always discord
+exec_always flameshot
