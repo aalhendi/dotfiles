@@ -37,9 +37,7 @@ vim.g.netrw_winsize = 25
 
 require("aalhendi.packer")
 require("aalhendi.colorscheme")
--- TODO: Move this
-require'nvim-treesitter.configs'.setup { ensure_installed = {"c", "lua", "rust", "typescript", "prisma", "python"}, highlight = { enable = true },
-context_commentstring = {enable = true } }
+require("aalhendi.treesitter")
 require('aalhendi.sets')
 require('aalhendi.maps')
 require('aalhendi.colorizer')
