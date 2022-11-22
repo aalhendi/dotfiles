@@ -1,8 +1,14 @@
--- CMP setup
-local cmp = require "cmp"
-if not cmp then
-    return
+local cmp_status_ok, cmp = pcall(require, "cmp")
+if not cmp_status_ok then
+  return
 end
+
+local snip_status_ok, luasnip = pcall(require, "luasnip")
+if not snip_status_ok then
+  return
+end
+
+require("luasnip.loaders.from_vscode").lazy_load("")
 
 -- Utils
 local check_backspace = function()
@@ -64,16 +70,17 @@ cmp.setup {
 
     mapping = {
         ["<CR>"] = cmp.mapping.confirm { select = false },
-        ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+        ["<C-b>"] = cmp.mapping.scroll_docs(-4),
         ["<C-f>"] = cmp.mapping.scroll_docs(4),
-        ["<C-p>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Select },
-        ["<C-n>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Select },
+        ["<C-k>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Select },
+        ["<C-j>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Select },
+        ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
+        ["<C-y>"] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
         ["<C-e>"] = cmp.mapping {
             i = cmp.mapping.abort(),
             c = cmp.mapping.close(),
         },
         ["<Tab>"] = cmp.mapping(function(fallback)
-            local luasnip = require "luasnip"
             if cmp.visible() then
                 cmp.select_next_item()
             elseif luasnip.expandable() then
@@ -88,7 +95,6 @@ cmp.setup {
         end, { "i", "s" }),
 
         ["<S-Tab>"] = cmp.mapping(function(fallback)
-            local luasnip = require "luasnip"
             if cmp.visible() then
                 cmp.select_next_item()
             elseif luasnip.expandable() then
@@ -103,8 +109,9 @@ cmp.setup {
         end, { "i", "s" }),
     },
     formatting = {
+        fields = {"kind", "abbr", "menu"},
         format = function(entry, item)
-            item.kind = lsp_symbols[item.kind]
+            item.kind = string.format("%s", lsp_symbols[item.kind])
             if entry.source.name == "cmp_tabnine" then
                 item.kind = "   (TabNine)"
                 if entry.completion_item.data ~= nil and entry.completion_item.data.detail ~= nil then
@@ -112,13 +119,13 @@ cmp.setup {
                 end
             end
             item.menu = ({
+                nvim_lsp = "[LSP]",
+                luasnip = "[Snippet]",
+                path = "[Path]",
                 buffer = "[Buffer]",
                 cmp_tabnine = "[T9]",
-                nvim_lsp = "[LSP]",
                 nvim_lua = "[NLUA]",
                 treesitter = "[TS]",
-                path = "[Path]",
-                luasnip = "[Snippet]",
                 copilot = "[CoPilot]",
             })[entry.source.name]
             return item
@@ -126,10 +133,6 @@ cmp.setup {
     },
     snippet = {
         expand = function(args)
-            local luasnip = require "luasnip"
-            if not luasnip then
-                return
-            end
             luasnip.lsp_expand(args.body)
         end,
     },
