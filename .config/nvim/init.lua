@@ -30,11 +30,23 @@ require('lazy').setup({
   -- NOTE: Ripgrep is required for live_grep in telescope
   {
     'nvim-telescope/telescope.nvim', tag = '0.1.8',
-    -- or                          , branch = '0.1.x',
     dependencies = { 'nvim-lua/plenary.nvim' }
   },
+  {
+    "nvim-telescope/telescope-file-browser.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
+  },
 
-
+  -- Git
+  {
+    "NeogitOrg/neogit",
+    dependencies = {
+      "nvim-lua/plenary.nvim",         -- required
+      "sindrets/diffview.nvim",        -- optional - Diff integration
+      "nvim-telescope/telescope.nvim", -- optional
+    },
+  config = true
+  },
   -- Persist and toggle multiple terminals 
   {'akinsho/toggleterm.nvim', version = "*", config = true},
   -- UI
@@ -69,8 +81,6 @@ vim.cmd.colorscheme('gruber-darker')
 local lsp_zero = require('lsp-zero')
 
 lsp_zero.on_attach(function(client, bufnr)
-  -- see :help lsp-zero-keybindings
-  -- to learn the available actions
   lsp_zero.default_keymaps({buffer = bufnr})
 end)
 
@@ -82,12 +92,16 @@ require('mason-lspconfig').setup({
 })
 
 -- Telescope stuff 
+require("telescope").load_extension "file_browser"
 local builtin = require('telescope.builtin')
 vim.g.mapleader = " "
 vim.keymap.set('n', '<leader>pf', builtin.find_files, {})
 vim.keymap.set('n', '<leader>fg', function() builtin.grep_string({search = vim.fn.input("Grep > ") }) end)
-vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
+vim.keymap.set('n', '<leader>ff', builtin.live_grep, { desc = 'Telescope live grep' })
+vim.keymap.set('n', '<leader>bf', builtin.buffers, {})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
+vim.keymap.set("n", "<space>fb", function() require("telescope").extensions.file_browser.file_browser() end)
+
 local cmp = require('cmp')
 local cmp_select_opts = {behavior = cmp.SelectBehavior.Select}
 cmp.setup({
@@ -148,5 +162,4 @@ vim.wo.relativenumber = true
 vim.bo.expandtab =  true
 vim.bo.tabstop = 2
 vim.bo.shiftwidth = 2
-vim.bo.ai = 2
-vim.wo.colorcolumn = 80
+vim.bo.ai = true
